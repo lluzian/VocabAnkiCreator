@@ -42,15 +42,19 @@ export async function registerRoutes(app: Express) {
         messages: [
           {
             role: "system",
-            content: "You are a helpful language tutor. Generate content for a flashcard with definition, example sentence, synonyms, and a memorable mnemonic. Return in JSON format."
+            content: "You are a helpful language tutor. Generate comprehensive flashcard content for English vocabulary learning. Include a clear definition, a natural example sentence, relevant synonyms, and a memorable mnemonic device. Return in JSON format with the following structure: { definition: string, example: string, synonyms: string[], mnemonic: string }"
           },
           {
             role: "user",
-            content: `Word: ${flashcard.word}\nContext (if any): ${flashcard.context || 'None provided'}`
+            content: `Generate flashcard content for the word: "${flashcard.word}"${flashcard.context ? `\nContext: ${flashcard.context}` : ''}`
           }
         ],
         response_format: { type: "json_object" }
       });
+
+      if (!response.choices[0].message.content) {
+        throw new Error("No content in OpenAI response");
+      }
 
       const aiContent = JSON.parse(response.choices[0].message.content);
       const updated = await storage.updateFlashcardAIContent(flashcard.id, aiContent);
