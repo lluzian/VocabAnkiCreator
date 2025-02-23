@@ -1,0 +1,34 @@
+### **Problem:**
+
+Every day, I encounter new English words and phrases that I’m not familiar with. Memorizing them can be challenging, and manually creating Anki flashcards for each word is time-consuming.
+
+---
+
+### **Solution:**
+
+A tool that effortlessly collects the new words you encounter throughout the week, uses AI to automatically generate comprehensive flashcards, and delivers a complete deck ready for import into Anki. For an even smoother workflow, the tool could later integrate directly with Anki for seamless learning.
+
+---
+
+### **Core Features**
+
+1. **Capture New Words Quickly**
+    - **User Interface:**
+    A minimalistic web page with a simple input field for the word or phrase and an optional comment field for additional context.
+    - **Data Storage:**
+    The captured words are temporarily stored using localStorage for quick and hassle-free data capture.
+2. **Generate and Manage AI-Enhanced Flashcards**
+    - **Initiate Flashcard Creation:**
+    A “Create Anki” feature that triggers the flashcard creation process using the saved words.
+    - **AI-Driven Enhancement:**
+    For each saved word, the tool creates a tailored prompt (incorporating any provided context) and sends it to an AI API (e.g., OpenAI's GPT) to generate a comprehensive flashcard. The resulting flashcard may include:
+        - A clear definition
+        - An example sentence
+        - Synonyms and mnemonic tips
+    - **Temporary Storage of Enhanced Flashcards:**
+    The AI-enhanced flashcards are stored locally (or in another temporary store) to allow for review and editing.
+    - **Export as a Ready-to-Use Deck:**
+    The tool converts the enhanced flashcards into a CSV file—a format that Anki readily accepts.
+    - **User Actions for Deck Management:**
+        - **Download Deck:** A “Download Deck” feature lets users quickly export the CSV file.
+        - **Data Cleanup:** A “Clear Data” or “Delete Flashcards” feature allows users to remove the stored flashcards once the export is successful.
