@@ -49,6 +49,13 @@ export default function Home() {
         description: "Your word has been saved",
       });
     },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to add word",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
   });
 
   const generateMutation = useMutation({
@@ -62,6 +69,16 @@ export default function Home() {
         title: "AI content generated",
         description: "Flashcard content has been enhanced with AI",
       });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Generation failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+    onSettled: () => {
+      setSelectedCard(null);
     },
   });
 

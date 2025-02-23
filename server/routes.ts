@@ -59,9 +59,12 @@ export async function registerRoutes(app: Express) {
       const aiContent = JSON.parse(response.choices[0].message.content);
       const updated = await storage.updateFlashcardAIContent(flashcard.id, aiContent);
       res.json(updated);
-    } catch (error) {
+    } catch (error: any) {
       console.error("OpenAI API Error:", error);
-      res.status(500).json({ error: "Failed to generate AI content" });
+      const errorMessage = error.code === "insufficient_quota" 
+        ? "OpenAI API quota exceeded. Please try again later or check your API key."
+        : "Failed to generate AI content";
+      res.status(500).json({ error: errorMessage });
     }
   });
 
