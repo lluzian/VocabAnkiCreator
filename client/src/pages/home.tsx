@@ -16,7 +16,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { downloadCsv } from "@/lib/csv";
 import { Plus, Download, Trash2, RefreshCw } from "lucide-react";
 
@@ -175,7 +175,10 @@ export default function Home() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => generateMutation.mutate(flashcard.id)}
+                    onClick={() => {
+                      setSelectedCard(flashcard.id);
+                      generateMutation.mutate(flashcard.id);
+                    }}
                     disabled={
                       generateMutation.isPending &&
                       selectedCard === flashcard.id
