@@ -1,19 +1,20 @@
 import type { Flashcard } from "@shared/schema";
 
 export function generateCsv(flashcards: Flashcard[]): string {
-  const header = "Word,Definition,Example,Synonyms,Mnemonic\n";
-  
+  const header = "Front,Back\n";
+
   const rows = flashcards
     .filter(card => card.aiContent)
     .map(card => {
       const content = card.aiContent!;
-      return [
-        card.word,
-        content.definition,
-        content.example,
-        content.synonyms.join("; "),
-        content.mnemonic
-      ].map(field => `"${field.replace(/"/g, '""')}"`).join(",");
+      const back = [
+        `Definition: ${content.definition}`,
+        `Example: ${content.example}`,
+        `Synonyms: ${content.synonyms.join(", ")}`,
+        `Mnemonic: ${content.mnemonic}`
+      ].join("<br>");
+
+      return `${card.word};${back.replace(/"/g, '""')}`;
     })
     .join("\n");
 
