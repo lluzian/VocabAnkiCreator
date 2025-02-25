@@ -84,6 +84,12 @@ export async function registerRoutes(app: Express) {
     res.json({ message: "All flashcards deleted" });
   });
 
+  app.delete("/api/flashcards/:id", async (req, res) => {
+    const { id } = req.params;
+    await storage.deleteFlashcard(parseInt(id));
+    res.json({ message: "Flashcard deleted" });
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

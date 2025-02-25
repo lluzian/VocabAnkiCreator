@@ -18,7 +18,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { downloadCsv } from "@/lib/csv";
-import { Plus, Download, Trash2, RefreshCw } from "lucide-react";
+import { Plus, Download, Trash2, X } from "lucide-react";
 
 export default function Home() {
   const { toast } = useToast();
@@ -39,14 +39,17 @@ export default function Home() {
   const createMutation = useMutation({
     mutationFn: async (data: InsertFlashcard) => {
       const res = await apiRequest("POST", "/api/flashcards", data);
-      return res.json();
+      const flashcard = await res.json();
+      // Automatically generate AI content after creating
+      await apiRequest("POST", `/api/flashcards/${flashcard.id}/generate`);
+      return flashcard;
     },
     onSuccess: () => {
       form.reset();
       queryClient.invalidateQueries({ queryKey: ["/api/flashcards"] });
       toast({
         title: "Word added successfully",
-        description: "Your word has been saved",
+        description: "Your word has been saved and enhanced with AI",
       });
     },
     onError: (error: Error) => {
@@ -54,6 +57,19 @@ export default function Home() {
         title: "Failed to add word",
         description: error.message,
         variant: "destructive",
+      });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/flashcards/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/flashcards"] });
+      toast({
+        title: "Flashcard removed",
+        description: "The flashcard has been deleted",
       });
     },
   });
@@ -190,19 +206,11 @@ export default function Home() {
                     )}
                   </div>
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedCard(flashcard.id);
-                      generateMutation.mutate(flashcard.id);
-                    }}
-                    disabled={
-                      generateMutation.isPending &&
-                      selectedCard === flashcard.id
-                    }
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => deleteMutation.mutate(flashcard.id)}
                   >
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    {flashcard.aiContent ? "Regenerate" : "Generate"}
+                    <X className="w-4 h-4" />
                   </Button>
                 </div>
 

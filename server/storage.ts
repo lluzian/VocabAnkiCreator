@@ -5,6 +5,7 @@ export interface IStorage {
   createFlashcard(flashcard: InsertFlashcard): Promise<Flashcard>;
   updateFlashcardAIContent(id: number, aiContent: Flashcard["aiContent"]): Promise<Flashcard>;
   deleteFlashcards(): Promise<void>;
+  deleteFlashcard(id: number): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -43,6 +44,14 @@ export class MemStorage implements IStorage {
 
   async deleteFlashcards(): Promise<void> {
     this.flashcards.clear();
+  }
+
+  async deleteFlashcard(id: number): Promise<void> {
+    if (this.flashcards.has(id)) {
+      this.flashcards.delete(id);
+    } else {
+      throw new Error("Flashcard not found");
+    }
   }
 }
 
