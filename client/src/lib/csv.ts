@@ -1,19 +1,22 @@
+
 import type { Flashcard } from "@shared/schema";
 
 export function generateCsv(flashcards: Flashcard[]): string {
-  const header = "Front,Back\n";
+  const header = "Word,Definition,Example,Synonyms\n";
 
   const rows = flashcards
     .filter(card => card.aiContent)
     .map(card => {
       const content = card.aiContent!;
-      const back = [
-        content.definition,
-        content.pronunciation_part_of_speech_synonyms,
-        `<i>${content.example_sentence}</i>`
-      ].join("<br>");
-
-      return `${card.word};${back.replace(/"/g, '""')}`;
+      // Properly escape fields and handle quotes
+      const escapeCsvField = (field: string) => `"${field.replace(/"/g, '""')}"`;
+      
+      return [
+        escapeCsvField(card.word),
+        escapeCsvField(content.definition),
+        escapeCsvField(content.example),
+        escapeCsvField(content.synonyms.join(", "))
+      ].join(",");
     })
     .join("\n");
 
@@ -25,6 +28,6 @@ export function downloadCsv(flashcards: Flashcard[]) {
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "anki_flashcards.csv";
+  link.download = "flashcards.csv";
   link.click();
 }
