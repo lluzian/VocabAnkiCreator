@@ -15,9 +15,9 @@ export function generateCsv(flashcards: Flashcard[]): string {
       
       // Combine all content into a single back field
       const backContent = [
-        `Definition: ${content.definition || ''}`,
+        content.definition || '',
         content.part_of_speech_synonyms || '',
-        `Example: ${content.example_sentence || ''}`,
+        content.example_sentence?.replace(/_/g, '') || '',
       ].filter(Boolean).join('\n');
       
       return [
