@@ -213,7 +213,7 @@ export default function Home() {
                       {flashcard.aiContent.definition}
                     </p>
                     <p>
-                      {flashcard.aiContent.pronunciation_part_of_speech_synonyms}
+                      {flashcard.aiContent.part_of_speech_synonyms}
                     </p>
                     <p className="italic">
                       {flashcard.aiContent.example_sentence}
