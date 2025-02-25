@@ -2,23 +2,28 @@
 import type { Flashcard } from "@shared/schema";
 
 export function generateCsv(flashcards: Flashcard[]): string {
-  const header = "Word,Definition,Example,Synonyms\n";
+  const header = "Front,Back\n";
 
   const rows = flashcards
     .filter(card => card.aiContent)
     .map(card => {
       const content = card.aiContent!;
-      // Properly escape fields and handle quotes
       const escapeCsvField = (field: string | undefined) => {
         if (!field) return '""';
         return `"${field.toString().replace(/"/g, '""')}"`;
       };
       
+      // Combine all content into a single back field
+      const backContent = [
+        `Definition: ${content.definition || ''}`,
+        content.pronunciation_part_of_speech_synonyms || '',
+        `Example: ${content.example || ''}`,
+        content.synonyms?.length ? `Synonyms: ${content.synonyms.join(', ')}` : ''
+      ].filter(Boolean).join('\n');
+      
       return [
         escapeCsvField(card.word),
-        escapeCsvField(content.definition),
-        escapeCsvField(content.example),
-        escapeCsvField(content.synonyms ? content.synonyms.join(", ") : "")
+        escapeCsvField(backContent)
       ].join(",");
     })
     .join("\n");
