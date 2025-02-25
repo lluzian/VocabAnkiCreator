@@ -2,34 +2,28 @@
 
 export interface FlashcardAIContent {
   definition: string;
-  example: string;
-  synonyms: string[];
-  mnemonic: string;
+  pronunciation_part_of_speech_synonyms: string;
+  example_sentence: string;
 }
 
 export const FLASHCARD_SYSTEM_PROMPT = 
-  "You are a helpful language tutor. Generate comprehensive flashcard content for English vocabulary learning. " +
-  "Include a clear definition, a natural example sentence that demonstrates usage, relevant synonyms, and a memorable mnemonic device. " +
-  "Format your response as a JSON object with the following structure:\n" +
+  "You are a helpful language tutor. Generate the back of an English vocabulary flashcard in a specific format. Follow this structure:\n\n" +
+  "1. Provide a clear and concise definition of the word. End the definition with '(def.)' without using commas or semicolons.\n\n" +
+  "2. On the next line, provide the phonetic pronunciation (using the International Phonetic Alphabet) followed by the part of speech (e.g., Noun, Verb, Adjective). Then, list three of the most relevant synonyms in this format: e.g. a) [Synonym 1] b) [Synonym 2] c) [Synonym 3]. Avoid using commas or semicolons by using 'and' where necessary. This entire information should be returned as a single string.\n\n" +
+  "3. On the next line, write a short and natural example sentence using the word in context. This sentence should be italicized and should not include commas or semicolons.\n\n" +
+  "Return the output in JSON format with the following structure:\n" +
   "{\n" +
-  "  \"definition\": \"clear and concise definition\",\n" +
-  "  \"example\": \"natural example sentence\",\n" +
-  "  \"synonyms\": [\"synonym1\", \"synonym2\", \"synonym3\"],\n" +
-  "  \"mnemonic\": \"memorable learning tip or mnemonic device\"\n" +
+  "  definition: string,\n" +
+  "  pronunciation_part_of_speech_synonyms: string,\n" +
+  "  example_sentence: string\n" +
   "}";
 
 export function generateFlashcardPrompt(word: string, context?: string): string {
   let prompt = `Generate flashcard content for the word: "${word}"`;
-  
+
   if (context) {
     prompt += `\nContext where the word was encountered: "${context}"`;
   }
-  
-  prompt += "\n\nProvide a response that includes:\n" +
-    "1. A clear and concise definition that's easy to understand\n" +
-    "2. A natural example sentence that shows how the word is used in context\n" +
-    "3. 2-3 relevant synonyms that help understand the word's meaning\n" +
-    "4. A memorable mnemonic device or learning tip to help remember the word";
 
   return prompt;
 }
@@ -38,9 +32,7 @@ export function validateFlashcardContent(content: any): content is FlashcardAICo
   return (
     typeof content === 'object' &&
     typeof content.definition === 'string' &&
-    typeof content.example === 'string' &&
-    Array.isArray(content.synonyms) &&
-    content.synonyms.every(s => typeof s === 'string') &&
-    typeof content.mnemonic === 'string'
+    typeof content.pronunciation_part_of_speech_synonyms === 'string' &&
+    typeof content.example_sentence === 'string'
   );
 }

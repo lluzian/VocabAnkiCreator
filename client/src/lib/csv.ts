@@ -8,10 +8,9 @@ export function generateCsv(flashcards: Flashcard[]): string {
     .map(card => {
       const content = card.aiContent!;
       const back = [
-        `Definition: ${content.definition}`,
-        `Example: ${content.example}`,
-        `Synonyms: ${content.synonyms.join(", ")}`,
-        `Mnemonic: ${content.mnemonic}`
+        content.definition,
+        content.pronunciation_part_of_speech_synonyms,
+        `<i>${content.example_sentence}</i>`
       ].join("<br>");
 
       return `${card.word};${back.replace(/"/g, '""')}`;

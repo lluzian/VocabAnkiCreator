@@ -213,14 +213,10 @@ export default function Home() {
                       {flashcard.aiContent.definition}
                     </p>
                     <p>
-                      <strong>Example:</strong> {flashcard.aiContent.example}
+                      {flashcard.aiContent.pronunciation_part_of_speech_synonyms}
                     </p>
-                    <p>
-                      <strong>Synonyms:</strong>{" "}
-                      {flashcard.aiContent?.synonyms?.join(", ") || "None"}
-                    </p>
-                    <p>
-                      <strong>Mnemonic:</strong> {flashcard.aiContent?.mnemonic || "None"}
+                    <p className="italic">
+                      {flashcard.aiContent.example_sentence}
                     </p>
                   </div>
                 )}
