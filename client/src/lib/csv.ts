@@ -1,8 +1,6 @@
 import type { Flashcard } from "@shared/schema";
 
 export function generateCsv(flashcards: Flashcard[]): string {
-  const header = "Front,Back\n";
-
   const rows = flashcards
     .filter(card => card.aiContent)
     .map(card => {
@@ -26,7 +24,7 @@ export function generateCsv(flashcards: Flashcard[]): string {
     })
     .join("\n");
 
-  return header + rows;
+  return rows;
 }
 
 export function downloadCsv(flashcards: Flashcard[]) {
