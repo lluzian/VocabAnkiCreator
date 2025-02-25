@@ -9,13 +9,16 @@ export function generateCsv(flashcards: Flashcard[]): string {
     .map(card => {
       const content = card.aiContent!;
       // Properly escape fields and handle quotes
-      const escapeCsvField = (field: string) => `"${field.replace(/"/g, '""')}"`;
+      const escapeCsvField = (field: string | undefined) => {
+        if (!field) return '""';
+        return `"${field.toString().replace(/"/g, '""')}"`;
+      };
       
       return [
         escapeCsvField(card.word),
         escapeCsvField(content.definition),
         escapeCsvField(content.example),
-        escapeCsvField(content.synonyms.join(", "))
+        escapeCsvField(content.synonyms ? content.synonyms.join(", ") : "")
       ].join(",");
     })
     .join("\n");
