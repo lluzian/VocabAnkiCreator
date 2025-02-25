@@ -14,7 +14,7 @@ export const FLASHCARD_SYSTEM_PROMPT =
   "Return the output in JSON format with the following structure:\n" +
   "{\n" +
   "  definition: string,\n" +
-  "  pronunciation_part_of_speech_synonyms: string,\n" +
+  "  part_of_speech_synonyms: string,\n" +
   "  example_sentence: string\n" +
   "}";
 
@@ -32,7 +32,7 @@ export function validateFlashcardContent(content: any): content is FlashcardAICo
   return (
     typeof content === 'object' &&
     typeof content.definition === 'string' &&
-    typeof content.pronunciation_part_of_speech_synonyms === 'string' &&
+    typeof content.part_of_speech_synonyms === 'string' &&
     typeof content.example_sentence === 'string'
   );
 }
