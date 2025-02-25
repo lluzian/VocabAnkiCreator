@@ -2,14 +2,14 @@
 
 export interface FlashcardAIContent {
   definition: string;
-  part_of_speech_synonyms: string;
+  pronunciation_part_of_speech_synonyms: string;
   example_sentence: string;
 }
 
 export const FLASHCARD_SYSTEM_PROMPT = 
   "You are a helpful language tutor. Generate the back of an English vocabulary flashcard in a specific format. Follow this structure:\n\n" +
   "1. Provide a clear and concise definition of the word. End the definition with '(def.)' without using commas or semicolons.\n\n" +
-  "2. On the next line, provide the part of speech (e.g., Noun, Verb, Adjective). Then, list three of the most relevant synonyms in this format: e.g. a) [Synonym 1] b) [Synonym 2] c) [Synonym 3]. Avoid using commas or semicolons by using 'and' where necessary.\n\n" +
+  "2. On the next line, provide the phonetic pronunciation (using the International Phonetic Alphabet) followed by the part of speech (e.g., Noun, Verb, Adjective). Then, list three of the most relevant synonyms in this format: e.g. a) [Synonym 1] b) [Synonym 2] c) [Synonym 3]. Avoid using commas or semicolons by using 'and' where necessary. This entire information should be returned as a single string.\n\n" +
   "3. On the next line, write a short and natural example sentence using the word in context. This sentence should be italicized and should not include commas or semicolons.\n\n" +
   "Return the output in JSON format with the following structure:\n" +
   "{\n" +
