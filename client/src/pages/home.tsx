@@ -217,10 +217,10 @@ export default function Home() {
                     </p>
                     <p>
                       <strong>Synonyms:</strong>{" "}
-                      {flashcard.aiContent.synonyms.join(", ")}
+                      {flashcard.aiContent?.synonyms?.join(", ") || "None"}
                     </p>
                     <p>
-                      <strong>Mnemonic:</strong> {flashcard.aiContent.mnemonic}
+                      <strong>Mnemonic:</strong> {flashcard.aiContent?.mnemonic || "None"}
                     </p>
                   </div>
                 )}
