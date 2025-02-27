@@ -57,10 +57,10 @@ app.use((req, res, next) => {
     }
 
     // Start the server
-    const port = 5000;
+    const port = process.env.PORT || 5000;
     server.listen(
       {
-        port,
+        port: Number(port),
         host: "0.0.0.0",
         reusePort: true,
       },
